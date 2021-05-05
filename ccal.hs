@@ -2,6 +2,7 @@ import Data.List (find, intercalate)
 import Data.Time.Calendar
 import Data.Time.Format (defaultTimeLocale, months)
 import System.Environment (getArgs)
+import System.Exit (exitWith, ExitCode(ExitFailure))
 import System.IO (hPutStrLn, stderr)
 import Text.Read (readMaybe)
 
@@ -50,7 +51,9 @@ main = do
     argsmay <- fmap parseArgs getArgs
     case argsmay of
       NeedHelp -> sendHelp
-      NoParse -> hPutStrLn stderr "Illegal arguments. Please see '--help'."
+      NoParse -> do
+          hPutStrLn stderr "Illegal arguments. Please see '--help'."
+          exitWith (ExitFailure 1)
       Args year month1 count -> putStr (calendar year month1 count)
 
 parseArgs [] = NeedHelp
