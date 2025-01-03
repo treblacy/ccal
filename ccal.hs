@@ -36,8 +36,8 @@ calendar year month1 count = unlines (map makeWeek sundays)
         thisweek = [sunday .. addDays 6 sunday `min` day']
         dmns = map (\d -> case toGregorian d of (_,m,n) -> (d,m,n)) thisweek
         inRange d = d >= day1 && d <= day'
-        monthName = case find (\(_, _, n) -> n == 1) dmns of
-          Just (d, m, _) | inRange d -> snd (months defaultTimeLocale !! (m - 1))
+        monthName = case dmns of
+          (_, m, n) : _ | n <= 7 -> snd (months defaultTimeLocale !! (m - 1))
           _ -> "   "
         showDay (d, _, n) | not (inRange d) = "  "
                           | n < 10 = " " ++ show n
